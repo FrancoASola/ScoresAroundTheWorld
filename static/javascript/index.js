@@ -23,20 +23,28 @@ var styleFunction = function(feature) {
   return style;
 };
 
-$.ajax({
-  
+var vectorSource = new ol.source.Vector({
+  format: new ol.format.GeoJSON()
 })
 
-var vectorSource = new ol.source.Vector({
-  url: "/static/soccer.geojson",
-  format: new ol.format.GeoJSON({
-    extractStyles: false
-  })
+var vector = new ol.layer.Vector({
+  title: 'b_layer',
+  source : vectorSource,
+  style: styleFunction
 });
 
-var vector = new ol.layer.Vector({
-  source: vectorSource,
-  style: styleFunction
+$.ajax({
+  type: "GET",
+  url: "/static/soccer.geojson",
+  dataType:"json",
+  success:function(data){
+      // If response is valid
+      var geojsonFormat = new ol.format.GeoJSON();
+
+      // reads and converts GeoJSon to Feature Object
+      var features = geojsonFormat.readFeatures(data);
+      vectorSource.addFeatures(features);
+  }
 });
 
 var raster = new ol.layer.Tile({
@@ -45,15 +53,15 @@ var raster = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-  layers: [raster, vector],
+  layers: [raster],
   target: 'map',
   view: new ol.View({
-    center: [0, 0],
+    center: [1600000, 1700000],
     zoom: 2
   })
 });
 
-
+map.addLayer(vector)
 map.render()
 // // var info = $('#info');
 // // info.tooltip({
