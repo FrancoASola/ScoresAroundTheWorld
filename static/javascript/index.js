@@ -24,28 +24,35 @@ var styleFunction = function(feature) {
 };
 
 var vectorSource = new ol.source.Vector({
-  format: new ol.format.GeoJSON()
 })
 
 var vector = new ol.layer.Vector({
-  title: 'b_layer',
   source : vectorSource,
   style: styleFunction
 });
 
-$.ajax({
-  type: "GET",
-  url: "/static/soccer.geojson",
-  dataType:"json",
-  success:function(data){
-      // If response is valid
-      var geojsonFormat = new ol.format.GeoJSON();
-
-      // reads and converts GeoJSon to Feature Object
-      var features = geojsonFormat.readFeatures(data);
-      vectorSource.addFeatures(features);
-  }
-});
+function getCurrentGoals(){
+  $.ajax({
+    cache: false,
+    type: "GET",
+    url: "/static/soccer.geojson",
+    success:function(data){
+        // If response is valid
+        var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857' });
+        // reads and converts GeoJSon to Feature Object
+        var features = geojsonFormat.readFeatures(data);
+        vectorSource.clear()
+        console.log(vectorSource.features)
+        vectorSource.addFeatures(features);
+        console.log(features),
+        map.render()
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(getCurrentGoals, 5000);
+    }
+  });
+}
 
 var raster = new ol.layer.Tile({
   source: new ol.source.OSM({
@@ -53,7 +60,7 @@ var raster = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-  layers: [raster],
+  layers: [raster, vector],
   target: 'map',
   view: new ol.View({
     center: [1600000, 1700000],
@@ -61,7 +68,7 @@ var map = new ol.Map({
   })
 });
 
-map.addLayer(vector)
+getCurrentGoals()
 map.render()
 // // var info = $('#info');
 // // info.tooltip({
