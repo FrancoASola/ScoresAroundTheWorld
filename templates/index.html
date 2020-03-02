@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GOALS! Around the World</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'libs/v6.2.1-dist/ol.css') }}">
+    <style>
+        #map {
+            position: relative;
+        }
+        #info {
+            position: absolute;
+            height: 1px;
+            width: 1px;
+            z-index: 100;
+        }
+        .tooltip.in {
+            opacity: 1;
+        }
+        .tooltip.top .tooltip-arrow {
+            border-top-color: white;
+        }
+        .tooltip-inner {
+            border: 2px solid white;
+        }
+</style>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="grid-1">
+            <div class="sidebar">
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div id="map" class='map'></div>    
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{{ url_for('static', filename= 'libs/v6.2.1-dist/ol.js') }}">  </script>
+    <script src="{{ url_for('static', filename= 'javascript/index.js' ) }}" >  </script>
+    
+</body>
+</html>
