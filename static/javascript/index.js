@@ -1,4 +1,5 @@
 
+// Style for Vector Layer
 var styleCache = {};
 var styleFunction = function(feature) {
   var name = feature.get('name');
@@ -10,7 +11,7 @@ var styleFunction = function(feature) {
       image: new ol.style.Circle({
         radius: radius,
         fill: new ol.style.Fill({
-          color: 'rgba(240, 52, 52, 0.4)'
+          color: 'rgba(240, 52, 52, 0.8)'
         }),
         stroke: new ol.style.Stroke({
           color: 'rgba(255, 204, 0, 0.2)',
@@ -23,6 +24,7 @@ var styleFunction = function(feature) {
   return style;
 };
 
+// Vector Source and Layer
 var vectorSource = new ol.source.Vector({
 })
 
@@ -31,6 +33,7 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
+//Pull goals and add to current vector layer
 function getCurrentGoals(){
   $.ajax({
     cache: false,
@@ -42,9 +45,7 @@ function getCurrentGoals(){
         // reads and converts GeoJSon to Feature Object
         var features = geojsonFormat.readFeatures(data);
         vectorSource.clear()
-        console.log(vectorSource.features)
         vectorSource.addFeatures(features);
-        console.log(features),
         map.render()
     },
     complete: function() {
@@ -54,6 +55,7 @@ function getCurrentGoals(){
   });
 }
 
+//Create Map
 var raster = new ol.layer.Tile({
   source: new ol.source.OSM({
   })
@@ -70,6 +72,8 @@ var map = new ol.Map({
 
 getCurrentGoals()
 map.render()
+
+//Goal Information
 // // var info = $('#info');
 // // info.tooltip({
 // //   animation: false,
