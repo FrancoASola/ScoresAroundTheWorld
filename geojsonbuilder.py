@@ -15,12 +15,12 @@ def buildgeojson(current_matches):
         if not current_matches[match_id].get('coordinates'):
             coords = coordinates.findCoords(location, homeTeam)
             if coords:
-                current_matches[match_id]['coordinates'] = [coords['lat'], coords['lng']]
+                current_matches[match_id]['coordinates'] = [coords['lng'], coords['lat']]
+            else:
+                current_matches[match_id]['coordinates'] = None
         if current_matches[match_id].get('coordinates'):
             feature = {'type': 'Feature', 'properties': {
-                        'Teams:' : [homeTeam, awayTeam],
-                        'Score:' : score,
-                        'Time:' : time },
+                        'info' : f"{homeTeam} vs. {awayTeam}, score: {score}, time: {time} mins"},
                         'geometry' : {
                         'type' : 'Point',
                         'coordinates': current_matches[match_id].get('coordinates')
@@ -30,5 +30,3 @@ def buildgeojson(current_matches):
    
     with open('./static/soccer.geojson', 'w') as geojson:
         json.dump(soccer, geojson)
-
-buildgeojson({})

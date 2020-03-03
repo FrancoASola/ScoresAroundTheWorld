@@ -4,9 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>GOALS! Around the World</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'libs/v6.2.1-dist/ol.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <style>
         #map {
             position: relative;
@@ -25,21 +27,17 @@
         }
         .tooltip-inner {
             border: 2px solid white;
+            font-size: 80%;
+        }
+        .tooltip .tooltiptext{
+            text-align: center;
+            font-size: 0.5em;
         }
 </style>
 </head>
 <body>
-    <div class="grid-container">
-        <div class="grid-1">
-            <div class="sidebar">
-            </div>
-        </div>
+    <div id="map" class='map'></div><div id="info"></div></div>     
 
-        <div class="grid-2">
-            <div id="map" class='map'></div>    
-        </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="{{ url_for('static', filename= 'libs/v6.2.1-dist/ol.js') }}">  </script>
     <script src="{{ url_for('static', filename= 'javascript/index.js' ) }}" >  </script>
     

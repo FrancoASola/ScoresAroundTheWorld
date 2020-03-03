@@ -20,6 +20,11 @@ def pullSoccerMatches(current_matches):
                                             'status' : match['status'],
                                             'fixture_id': match['fixture_id']}
         elif match_id in current_matches and match['score'] != current_matches[match_id]['score']:
-            print('need to upgrade score')
-    
+            print('need to update score')
+        elif match_id not in current_matches:
+            current_matches.pop(match_id)
+        else:
+            current_matches[match_id]['time'] = match['time']
     return current_matches
+
+print(pullSoccerMatches({}))

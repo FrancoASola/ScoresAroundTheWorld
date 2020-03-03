@@ -1,1 +1,4 @@
 '59xpyAhIFBXKh81oC9ptBe6POJCLXov9Zu3WPIUMD7LnPmk7rZkgKCPTH0oK'
+key = 'dovU4iInbWpHnIHs'
+secret = '0kKYErWnwnA61f1eDw9IOR50OvHbdpEd'
+G_KEY = AIzaSyCMjW8GePLfbExz9gO-zD-3f6IkaUhXSxo

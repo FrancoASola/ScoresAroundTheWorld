@@ -57,7 +57,8 @@ function getCurrentGoals(){
 
 //Create Map
 var raster = new ol.layer.Tile({
-  source: new ol.source.OSM({
+  source: new ol.source.Stamen({
+    layer: 'toner'
   })
 });
 
@@ -74,39 +75,40 @@ getCurrentGoals()
 map.render()
 
 //Goal Information
-// // var info = $('#info');
-// // info.tooltip({
-// //   animation: false,
-// //   trigger: 'manual'
-// // });
+var info = $('#info');
+info.tooltip({
+  animation: false,
+  trigger: 'manual'
+});
 
-// var displayFeatureInfo = function(pixel) {
-//   info.css({
-//     left: pixel[0] + 'px',
-//     top: (pixel[1] - 15) + 'px'
-//   });
-//   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
-//     return feature;
-//   });
-//   if (feature) {
-//     info.tooltip('hide')
-//       .attr('data-original-title', feature.get('name'))
-//       .tooltip('fixTitle')
-//       .tooltip('show');
-//   } else {
-//     info.tooltip('hide');
-//   }
-// };
+var displayFeatureInfo = function(pixel) {
+  info.css({
+    left: pixel[0] + 'px',
+    top: (pixel[1] - 15) + 'px'
+  });
+  var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+    return feature;
+  });
 
-// map.on('pointermove', function(evt) {
-//   if (evt.dragging) {
-//     info.tooltip('hide');
-//     return;
-//   }
-//   displayFeatureInfo(map.getEventPixel(evt.originalEvent));
-// });
+  if (feature) {
+    info.tooltip('hide')
+      .attr('data-original-title', feature.get('info'))
+      .tooltip('fixTitle')
+      .tooltip('show');
+  } else {
+    info.tooltip('hide');
+  }
+};
 
-// map.on('click', function(evt) {
-//   displayFeatureInfo(evt.pixel);
-// });
+map.on('pointermove', function(evt) {
+  if (evt.dragging) {
+    info.tooltip('hide');
+    return;
+  }
+  displayFeatureInfo(map.getEventPixel(evt.originalEvent));
+});
+
+map.on('click', function(evt) {
+  displayFeatureInfo(evt.pixel);
+});
 
