@@ -1,12 +1,3 @@
-* {
-    box-sizing: border-box
-}
-
-body{
-    margin: 0;
-    padding: 0
-}
-
 .grid-container{
     display: grid;
     grid-template-columns: 10vw 100vw;

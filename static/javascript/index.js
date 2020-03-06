@@ -2,16 +2,16 @@
 // Style for Vector Layer
 var styleCache = {};
 var styleFunction = function(feature) {
-  var name = feature.get('name');
-  //var score = parseFloat(name.substr(2));
-  var radius = 5;
+  var scores = feature.get('score')
+  var score = parseInt(scores.substr(0)) + parseInt(scores.substr(4))
+  var radius = 5 + score;
   var style = styleCache[radius];
   if (!style) {
     style = new ol.style.Style({
       image: new ol.style.Circle({
         radius: radius,
         fill: new ol.style.Fill({
-          color: 'rgba(240, 52, 52, 0.8)'
+          color: 'rgba(244, 52, 52, 0.8)'
         }),
         stroke: new ol.style.Stroke({
           color: 'rgba(255, 204, 0, 0.2)',
@@ -41,7 +41,7 @@ function getCurrentGoals(){
     url: "/static/soccer.geojson",
     success:function(data){
         // If response is valid
-        var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857' });
+        var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857', extractStyles: false });
         // reads and converts GeoJSon to Feature Object
         var features = geojsonFormat.readFeatures(data);
         vectorSource.clear()
@@ -59,7 +59,7 @@ function getCurrentGoals(){
 var raster = new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: 'toner'
-  })
+  }),
 });
 
 var map = new ol.Map({

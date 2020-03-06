@@ -19,6 +19,7 @@ current_matches = {}
 @app.route('/')
 def index():
     '''Main Page'''
+    print('STARTING UP')
     geojsonbuilder.buildgeojson(current_matches)
     return render_template('index.html')
 
