@@ -21,7 +21,7 @@ def buildgeojson(current_matches):
                 current_matches[match_id]['coordinates'] = None
         if current_matches[match_id].get('coordinates'):
             feature = {'type': 'Feature', 'properties': {
-                        'info' : f"{homeTeam} {score} {awayTeam}, time: {time}'",
+                        'info' : f"{homeTeam} {score} {awayTeam} \n Time: {time}'",
                         'score': f"{score}"},
                         'geometry' : {
                         'type' : 'Point',

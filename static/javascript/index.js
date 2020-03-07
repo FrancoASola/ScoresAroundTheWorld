@@ -14,8 +14,8 @@ var styleFunction = function(feature) {
           color: 'rgba(244, 52, 52, 0.8)'
         }),
         stroke: new ol.style.Stroke({
-          color: 'rgba(255, 204, 0, 0.2)',
-          width: 5
+          color: 'rgba(255, 204, 0, 0.4)',
+          width: 3
         })
       })
     });
@@ -50,7 +50,7 @@ function getCurrentGoals(){
     },
     complete: function() {
       // Schedule the next request when the current one's complete
-      setTimeout(getCurrentGoals, 5000);
+      setTimeout(getCurrentGoals, 10000);
     }
   });
 }

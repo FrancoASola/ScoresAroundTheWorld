@@ -28,5 +28,5 @@ def updategeojson():
     geojsonbuilder.buildgeojson(current_matches)
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(updategeojson, 'interval', seconds = 60)
+sched.add_job(updategeojson, 'interval', seconds = 30)
 sched.start()
