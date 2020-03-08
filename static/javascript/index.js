@@ -1,6 +1,8 @@
 
 // Style for Vector Layer
 var styleCache = {};
+const red = 'rgba(244, 52, 52, 0.8)'
+const green = 'rgba(14, 138, 47, 0.8)'
 var styleFunction = function(feature) {
   var scores = feature.get('score')
   var score = parseInt(scores.substr(0)) + parseInt(scores.substr(4))
@@ -11,15 +13,11 @@ var styleFunction = function(feature) {
       image: new ol.style.Circle({
         radius: radius,
         fill: new ol.style.Fill({
-          color: 'rgba(244, 52, 52, 0.8)'
+          color: red
         }),
-        stroke: new ol.style.Stroke({
-          color: 'rgba(255, 204, 0, 0.4)',
-          width: 3
-        })
       })
     });
-    styleCache[radius] = style;
+    
   }
   return style;
 };
@@ -78,7 +76,7 @@ map.render()
 var info = $('#info');
 info.tooltip({
   animation: false,
-  trigger: 'manual'
+  trigger: 'manual',
 });
 
 var displayFeatureInfo = function(pixel) {

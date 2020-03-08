@@ -11,9 +11,17 @@ collection = db.coordinates
 ##Find Coordinates Using GeocoderAPI 
 def findCoords(location, homeTeam, TeamID):
     '''Get Coordinates for Stadium'''
+    ##Check DB First
     coords = collection.find_one({'_id': TeamID})
+    print(coords)
     if coords:
-        return coords['coordinates']
+        if coords['coordinates'] == None:
+            collection.update_one({'_id' : TeamID}, {'$set': {'coordinates' : 'N/A'}})
+            return 'N/A'
+        if coords['coordinates']:
+            return coords['coordinates']
+
+    ##If Not not Found
     if location:
         loc = location.replace(' ', '+')
         response = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={loc}&key=AIzaSyCMjW8GePLfbExz9gO-zD-3f6IkaUhXSxo')
@@ -32,5 +40,6 @@ def findCoords(location, homeTeam, TeamID):
             collection.insert_one(ins)
             return coords['results'][0]['geometry']['location']
         else: 
-            ins = {'_id': TeamID, 'coordinates': None}
+            ins = {'_id': TeamID, 'coordinates': 'N/A'}
             collection.insert_one(ins)
+            return 'N/A'

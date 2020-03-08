@@ -15,16 +15,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 current_matches = {}
-
 @app.route('/')
 def index():
     '''Main Page'''
-    print('STARTING UP')
-    geojsonbuilder.buildgeojson(current_matches)
     return render_template('index.html')
 
 def updategeojson():
-    print('Updating GeoJson', current_matches)
+    #print('Updating GeoJson', current_matches)
     geojsonbuilder.buildgeojson(current_matches)
 
 sched = BackgroundScheduler(daemon=True)

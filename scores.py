@@ -12,7 +12,7 @@ def pullSoccerMatches(current_matches):
     for match in matches:
         match_id = match['id']
         #Add new Matches
-        if match_id not in current_matches and match['status'] == 'IN PLAY':
+        if match_id not in current_matches and (match['status'] != 'FINISHED' or match['status'] != 'NOT STARTED'):
             current_matches[match_id] = {'Home Team': match['home_name'],
                                          'Home Team ID': match['home_id'],
                                             'Away Team': match['away_name'],
@@ -39,3 +39,5 @@ def pullSoccerMatches(current_matches):
 
     return current_matches
 
+if __name__ == "__main__":
+    print(pullSoccerMatches({}))
