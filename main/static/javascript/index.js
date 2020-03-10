@@ -17,7 +17,7 @@ var styleFunction = function(feature) {
         }),
       })
     });
-    
+    styleCache[radius] 
   }
   return style;
 };
@@ -36,7 +36,7 @@ function getCurrentGoals(){
   $.ajax({
     cache: false,
     type: "GET",
-    url: "/static/soccer.geojson",
+    url: '/api/soccer',
     success:function(data){
         // If response is valid
         var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857', extractStyles: false });
@@ -48,7 +48,7 @@ function getCurrentGoals(){
     },
     complete: function() {
       // Schedule the next request when the current one's complete
-      setTimeout(getCurrentGoals, 10000);
+      setTimeout(getCurrentGoals, 30000);
     }
   });
 }
@@ -76,13 +76,12 @@ map.render()
 var info = $('#info');
 info.tooltip({
   animation: false,
-  trigger: 'manual',
 });
 
 var displayFeatureInfo = function(pixel) {
   info.css({
     left: pixel[0] + 'px',
-    top: (pixel[1] - 15) + 'px'
+    top: (pixel[1]+50) + 'px'
   });
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
@@ -90,9 +89,9 @@ var displayFeatureInfo = function(pixel) {
 
   if (feature) {
     info.tooltip('hide')
-      .attr('data-original-title', feature.get('info'))
-      .tooltip('fixTitle')
-      .tooltip('show');
+        .attr('data-original-title', feature.get('info'))
+        // .tooltip('fixTitle')
+        .tooltip('show');
   } else {
     info.tooltip('hide');
   }

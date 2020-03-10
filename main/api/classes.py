@@ -1,6 +1,8 @@
 import pymongo
 import requests
 import json
+from main.extensions import mongo
+
 class Match:
 
     def __init__(self, homeTeam, homeTeamID, awayTeam, score, time, location, status, fixtureID):
@@ -14,17 +16,15 @@ class Match:
         self.fixtureID = fixtureID
         self.coordinates = None
 
+    #Check if Home Team is on DB if not, call on Google Geocoding API. TO DO: change
     def findCoords(self):
-        client = pymongo.MongoClient("mongodb+srv://Franco:SK81sc00@cluster0-3mgy4.gcp.mongodb.net/test?retryWrites=true&w=majority")
-        db = client.ScoresAroundWorld
-        collection = db.coordinates
         '''Get Coordinates for Stadium'''
-        coords = collection.find_one({'_id': self.homeTeamID})
+        coords = mongo.db.coordinates.find_one({'_id': self.homeTeamID})
         if coords:
             if coords['coordinates']:
                 self.coordinates = coords['coordinates']
             else:
-                collection.update_one({'_id' : self.homeTeamID}, {'$set': {'coordinates': 'N/A'}})
+                mongo.db.coordinates.update_one({'_id' : self.homeTeamID}, {'$set': {'coordinates': 'N/A'}})
                 self.coordinates = 'N/A'                
             return 
         if self.location:
@@ -33,7 +33,7 @@ class Match:
             coords = json.loads(response.text)
             if coords['results']:
                 ins = {'_id': self.homeTeamID, 'coordinates': coords['results'][0]['geometry']['location']}
-                collection.insert_one(ins)
+                mongo.db.coordinates.insert_one(ins)
                 self.coordinates = coords['results'][0]['geometry']['location']
                 return 
         if self.homeTeam:
@@ -43,12 +43,12 @@ class Match:
             coords = json.loads(response.text)
             if coords['results']:
                 ins = {'_id': self.homeTeamID, 'coordinates': coords['results'][0]['geometry']['location']}
-                collection.insert_one(ins)
+                mongo.db.coordinates.insert_one(ins)
                 self.coordinates = coords['results'][0]['geometry']['location']
                 return 
             else: 
                 ins = {'_id': self.homeTeamID, 'coordinates': 'N/A'}
-                collection.insert_one(ins)
+                mongo.db.coordinates.insert_one(ins)
                 self.coordinates = 'N/A'
                 return 
                 
