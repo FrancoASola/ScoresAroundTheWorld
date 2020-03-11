@@ -1,8 +1,11 @@
 from . import scores
 import json
 
-def buildgeojson(current_matches):
-    current_matches = scores.pullSoccerMatches(current_matches)
+def buildgeojson(current_matches, live, date):
+    if live:
+        current_matches = scores.pullSoccerMatches(current_matches)
+    else:
+        current_matches = scores.pullFinishedSoccerMatches(current_matches,date)
     soccer = {"type":"FeatureCollection","features":[]}
     for match_id in current_matches:
         match = current_matches[match_id]
@@ -17,6 +20,5 @@ def buildgeojson(current_matches):
             }
             soccer['features'].append(feature)
     return soccer
-if __name__ == "__main__":
-    buildgeojson({})
+
     

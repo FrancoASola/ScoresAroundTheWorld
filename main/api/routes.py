@@ -1,10 +1,13 @@
 from flask import Blueprint
-from apscheduler.schedulers.background import BackgroundScheduler
 from .geojsonbuilder import buildgeojson
 
 mod = Blueprint('api', __name__)
 
-@mod.route('/soccer')
-def updategeojson():
+@mod.route('/live/soccer')
+def updateLiveSoccer():
     #print('Updating GeoJson', current_matches)
-    return buildgeojson({})
+    return buildgeojson({}, True, '')
+
+@mod.route('/finished/soccer/<date>')
+def updateFinishedSoccer(date):
+    return buildgeojson({}, False, date)

@@ -1,6 +1,7 @@
 
 // Style for Vector Layer
 var styleCache = {};
+var date = ''
 const red = 'rgba(244, 52, 52, 0.8)'
 const green = 'rgba(14, 138, 47, 0.8)'
 var styleFunction = function(feature) {
@@ -31,26 +32,32 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
-//Pull goals and add to current vector layer
+//Query goals and add to current vector layer
+var params = {
+  cache: false,
+  type: "GET",
+  success: function(data){
+      // If response is valid
+      var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857', extractStyles: false });
+      // reads and converts GeoJSon to Feature Object
+      var features = geojsonFormat.readFeatures(data);
+      vectorSource.clear()
+      vectorSource.addFeatures(features);
+      map.render()
+  },
+};
 function getCurrentGoals(){
-  $.ajax({
-    cache: false,
-    type: "GET",
-    url: '/api/soccer',
-    success:function(data){
-        // If response is valid
-        var geojsonFormat = new ol.format.GeoJSON({ featureProjection: 'EPSG:3857', extractStyles: false });
-        // reads and converts GeoJSon to Feature Object
-        var features = geojsonFormat.readFeatures(data);
-        vectorSource.clear()
-        vectorSource.addFeatures(features);
-        map.render()
-    },
-    complete: function() {
+  if (date) {
+    params.url = `api/finished/soccer/${date}`;
+    params.complete = '';
+  } else {
+    params.url = '/api/live/soccer';
+    params.complete = function() {
       // Schedule the next request when the current one's complete
       setTimeout(getCurrentGoals, 30000);
-    }
-  });
+    };
+  }
+  $.ajax(params);
 }
 
 //Create Map
@@ -109,3 +116,32 @@ map.on('click', function(evt) {
   displayFeatureInfo(evt.pixel);
 });
 
+//Date
+//Calendar
+$('#picker').datetimepicker({
+  timepicker: false,
+  datepicker: true,
+  format: 'yy-m-d', // formatDate
+  closeOnDateSelect: true,
+  theme: 'dark',
+  yearStart:'2017',
+  allowBlank: true,
+  validateOnBlur: false,
+  forceParse: false
+});
+
+//On Submit Date 
+$('#datesubmit').on('click', function () {
+  var d = $('#picker').datetimepicker('getValue');
+  var year = (d.getFullYear()).toString();
+  var mm = (d.getMonth() + 1).toString();
+  if (mm.length < 2){
+    mm = '0'+mm
+  }
+  var dd = (d.getDate()).toString();
+  if (dd.length < 2){
+    dd = '0'+dd
+  }
+  date = `${year}-${mm}-${dd}`
+  getCurrentGoals()
+});
