@@ -143,5 +143,7 @@ $('#datesubmit').on('click', function () {
     dd = '0'+dd
   }
   date = `${year}-${mm}-${dd}`
+  vectorSource.clear()
+  window.history.pushState({'title' : date}, 'Finished Games', date);
   getCurrentGoals()
 });
