@@ -45,7 +45,6 @@ def pullFinishedSoccerMatches(current_matches, date):
     matches = []
     page = 1
     while True:
-        print(page)
         response = requests.get(url + f'&page={page}')
         data = response.json()
         if data:
