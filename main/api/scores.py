@@ -35,7 +35,7 @@ def pullSoccerMatches(current_matches):
         elif match_id in current_matches:
             current_matches[match_id].time = match['time']
 
-    return current_matches
+    return current_matches if current_matches else 404    
 
 def pullFinishedSoccerMatches(current_matches, date):
     ## TO DO:
@@ -61,5 +61,5 @@ def pullFinishedSoccerMatches(current_matches, date):
             curMatch.findCoords()
             current_matches[match_id] = curMatch   
     
-    return current_matches             
+    return current_matches if current_matches else 404            
 

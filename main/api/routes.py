@@ -3,11 +3,14 @@ from .geojsonbuilder import buildgeojson
 
 mod = Blueprint('api', __name__)
 
-@mod.route('/live/soccer')
+@mod.route('/live/soccer', methods=['GET'])
 def updateLiveSoccer():
-    #print('Updating GeoJson', current_matches)
+    ##To do:
+    #Require Authentication. Maybe logging in?
     return buildgeojson({}, True, '')
 
-@mod.route('/finished/soccer/<date>')
+@mod.route('/finished/soccer/<date>' , methods=['GET'])
 def updateFinishedSoccer(date):
+    ##To do:
+    #Require Authentication. Maybe logging in?
     return buildgeojson({}, False, date)
