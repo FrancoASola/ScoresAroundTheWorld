@@ -82,12 +82,11 @@ var map = new ol.Map({
 getCurrentGoals()
 map.render()
 
-//Goal Information
+//Match Tooltip
 var info = $('#info');
 info.tooltip({
   animation: false,
 });
-
 
 var displayFeatureInfo = function(pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
@@ -118,14 +117,14 @@ map.on('pointermove', function(evt) {
 map.on('click', function(evt) {
   displayFeatureInfo(evt.pixel);
 });
-console.log($('#navbar').height())
-//Comment Box
+
+//Match Comment Box Comment Box
 var displayChatBox = function(){
     $('#chatbox').css({
-      top: $('#navbar').height()
+      top: $('#navbar').height(),
+      diplay: 'block',
     }),
-    document.getElementById('chatbox').style.display = 'block'
-}
+};
 
 map.on('dblclick', function(){
   displayChatBox()
@@ -134,6 +133,14 @@ map.on('dblclick', function(){
 function closeForm() {
   document.getElementById("chatbox").style.display = "none";
 }
+
+function sendMessage(match_id){
+  $.ajax({
+    type: 'POST',
+    url: `api/messages/${match_id}`
+  });
+}
+
 //Date
 //Calendar
 $('#picker').datetimepicker({

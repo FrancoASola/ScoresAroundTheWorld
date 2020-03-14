@@ -2,6 +2,7 @@ import pymongo
 import requests
 import json
 from main.extensions import mongo
+import datetime
 
 class Match:
 
@@ -52,8 +53,25 @@ class Match:
                 self.coordinates = 'N/A'
                 return 
                 
+class Message:
+
+    def __init__(self, match_id, user, text):
+        self.match_id = match_id
+        self.user = user
+        self.text = text
+        self.time = datetime.datetime.now().strftime("%H:$M")
+        self.date = datetime.date.today()
 
 
+class Messages:
 
+    def __init__(self, match_id):
+        self.match_id = match_id
+        self.message_collection = mongo.db.messages
 
+    def postMessage(self, message):
+        self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': message}})
+
+    def getMessages(self):
+        return self.message_collection.find_all({'_id': self.match_id})
 
