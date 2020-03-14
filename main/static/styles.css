@@ -49,6 +49,12 @@
     font-size: 80px;
 }
 
+.form-control {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 /* The popup chat - hidden by default */
 .chat-popup {
   display: none;
@@ -129,21 +135,17 @@
 .type_msg {
     border-top: 1px solid #c4c4c4;
     position: absolute;
-    width: 95%
+    width: 95%;
+    bottom: 0;
 }
-.msg_btn {
-  background: #05728f none repeat scroll 0 0;
-  border: medium none;
-  border-radius: 50%;
+.input_msg_write .btn-sm {
+  background: #05728f;
   color: #fff;
   cursor: pointer;
-  font-size: 17px;
   position: absolute;
   right: 0;
-  top: 11px;
-  height: 33px;
-  width: 33px;
-  padding: 2px 2px;
+  top: 2px;
+  margin: auto;
 }
 
 .chat-popup .btn-danger {
@@ -157,9 +159,11 @@
     top: 0;
     left: 2px;
     position: absolute;
+    
   }
 
 
 .msg_history {
-  height: 90%;
+  height: 100%;
+  bottom: 0;
   overflow-y: auto;
