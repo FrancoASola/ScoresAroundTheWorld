@@ -59,8 +59,8 @@ class Message:
         self.match_id = match_id
         self.user = user
         self.text = text
-        self.time = datetime.datetime.now().strftime("%H:$M")
-        self.date = datetime.date.today()
+        self.time = datetime.datetime.now().strftime("%H:%M:%S")
+        self.date = datetime.date.today().strftime("%m/%d/%y")
 
 
 class Messages:
@@ -70,8 +70,11 @@ class Messages:
         self.message_collection = mongo.db.messages
 
     def postMessage(self, message):
-        self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': message}})
+        #check if message exist and update or insert accordingly:
+        self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
+        print(self.message_collection.find_one({'_id': self.match_id}))
 
     def getMessages(self):
-        return self.message_collection.find_all({'_id': self.match_id})
+        messages = self.message_collection.find_one({'_id': self.match_id})
+        return messages if messages else 'No Messages'
 

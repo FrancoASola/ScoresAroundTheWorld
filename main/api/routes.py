@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 from .geojsonbuilder import buildgeojson
 from . import classes
 
@@ -21,11 +21,15 @@ def updateFinishedSoccer(date):
 def post_message(match_id):
     ##To do:
     #Ruire Log in
-    message = classes.Message(match_id = match_id, user = None, text= 'Testing')
+    text = request.form['text']
+    message = classes.Message(match_id = match_id, user = None, text= text)
     messages = classes.Messages(match_id = match_id)
     messages.postMessage(message = message)
+    return messages.getMessages()
 
 @mod.route('/messages/<match_id>', methods=['GET'])
 def messages(match_id):
-    messages = classes.Messages(match_id = match_id)  
-    return messages.getMessages()
+    print('getting messages')
+    messages = classes.Messages(match_id = match_id)
+    
+    return jsonify(messages.getMessages())

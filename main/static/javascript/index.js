@@ -90,7 +90,6 @@ info.tooltip({
 
 var displayFeatureInfo = function(pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
-    
     return feature;
   });
   if (feature) {
@@ -118,28 +117,77 @@ map.on('click', function(evt) {
   displayFeatureInfo(evt.pixel);
 });
 
-//Match Comment Box Comment Box
-var displayChatBox = function(){
-    $('#chatbox').css({
-      top: $('#navbar').height(),
-      diplay: 'block',
-    }),
-};
+//Match Comment Box 
+var displayChatBox = function(pixel){
+  var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+    return feature;
+  });
+  if (feature) {
+    var match_id = feature.get('match_id')
+    $('p[id^="match"]').html(feature.get('info'))
+    $('p[id^="match"]').attr('name', match_id)
+    loadMessages(match_id)
+  }
+  $('#chatbox').css({
+    top: $('#navbar').height(),
+  }),
+  document.getElementById("chatbox").style.display = "block";
 
-map.on('dblclick', function(){
-  displayChatBox()
+}
+
+map.on('dblclick', function(evt){
+  info.tooltip('hide');
+  displayChatBox(map.getEventPixel(evt.originalEvent));
 });
 
 function closeForm() {
   document.getElementById("chatbox").style.display = "none";
 }
 
+//Send Messages
 function sendMessage(match_id){
   $.ajax({
     type: 'POST',
-    url: `api/messages/${match_id}`
+    url: `api/messages/${match_id}`,
+    data:{ 'text': $('#messagebox').val()},
   });
 }
+
+$('#send').on('click', function(){
+  match_id = $('p[id^="match"]').attr('name')
+  sendMessage(match_id)
+  $("#messagebox").val('')
+  loadMessages(match_id)
+})
+
+//Load Messages
+function loadMessages(match_id){
+  $.ajax({
+    type: 'GET',
+    url: `api/messages/${match_id}`,
+    success: function(data){
+      console.log(data['messages'])
+      $.each(data['messages'], add_message);
+    }
+  })
+}
+//Add messages 
+function add_message(key, value){
+  console.log(value[0]['text'])
+  $('<div>',{
+    class: "received_msg"
+  }).append( $('<div>',{
+    class: "received_withd_msg"
+  }).append( $('<p>'
+  ).append(
+    value[0]['text']))
+  ).append( $('<span>',{
+    class: "time_date"
+  }).append(`${value[0]['time']} | ${value[0]['date']}`)
+  ).appendTo('#msg_history')
+
+}
+
 
 //Date
 //Calendar

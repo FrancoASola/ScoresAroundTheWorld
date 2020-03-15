@@ -154,11 +154,10 @@
     /* padding: 16px 20px; */
     border: none;
     cursor: pointer;
-    margin-bottom:0px;
     opacity: 0.8;
-    top: 0;
-    left: 2px;
+    left: 3%;
     position: absolute;
+    top: 1%;
     
   }
 

@@ -12,8 +12,8 @@ def buildgeojson(current_matches, live, date):
         if match.coordinates and match.coordinates != 'N/A':
             feature = {'type': 'Feature', 'properties': {
                         'info' : f"{match.homeTeam} {match.score} {match.awayTeam} <br> Time: {match.time}'",
-                        'score': f"{match.score}"},
-                        'id': match_id,
+                        'score': f"{match.score}",
+                        'match_id': f"{match_id}"},
                         'geometry' : {
                         'type' : 'Point',
                         'coordinates': [match.coordinates['lng'], match.coordinates['lat']]

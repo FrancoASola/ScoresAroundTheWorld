@@ -4,27 +4,16 @@
     <div id="map" class='map'>
     <div id="info" class="info" data-html="true"></div>
     <container class="chat-popup" id="chatbox">
-        <p style='text-align: center;'> FC Barcelona vs Real Madrid </p>
+        <p class="display-5" style='text-align: center;' id='match'> FC Barcelona vs Real Madrid </p>
         <button type="button" class="btn btn-danger btn-sm" onclick="closeForm()">Close</button>
         <div class="mesgs">
-            <div class="msg_history">
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>Test which is a new approach to have all
-                      solutions</p>
-                    <span class="time_date"> 11:01 AM    |    June 9</span></div>
-                </div>
-                <div class="received_msg">
-                        <div class="received_withd_msg">
-                          <p>Test which is a new approach to have all
-                            solutions</p>
-                          <span class="time_date"> 11:01 AM    |    June 9</span></div>
-                </div>
+            <div class="msg_history" id="msg_history">
+              <!-- Message History  -->
             </div>
             <div class="type_msg">
               <div class="input_msg_write">
-                <input type="text" class="write_msg" placeholder="Type a message" />
-                <button type="button" class="btn btn-sm" onclick="sendMessage()">Send</button>
+                <input type="text" class="write_msg" id="messagebox" placeholder="Type a message" />
+                <button type="button" class="btn btn-sm" id='send'>Send</button>
               </div>
             </div>
         </div>
