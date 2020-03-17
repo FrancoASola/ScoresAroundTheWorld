@@ -10,11 +10,16 @@
     <!-- Load Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Load Socket IO -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <!-- Load Local Dependencies -->
     <link rel="stylesheet" href="{{ url_for('static', filename= 'styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'libs/v6.2.1-dist/ol.css') }}">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id = 'navbar'>
         <a class="navbar-brand" href="#">Scores</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item active">

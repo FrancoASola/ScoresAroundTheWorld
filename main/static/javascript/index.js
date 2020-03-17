@@ -118,46 +118,49 @@ map.on('click', function(evt) {
 });
 
 //Match Comment Box 
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+socket.on('connect', function() {
+});
 var displayChatBox = function(pixel){
+  //Check if its clicking for 
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
   });
+  //If there is feature, close tooltip, open chatbox, load messages and join chat room.
   if (feature) {
     var match_id = feature.get('match_id')
     $('p[id^="match"]').html(feature.get('info'))
     $('p[id^="match"]').attr('name', match_id)
+    $('#msg_history').empty()
     loadMessages(match_id)
+    socket.emit('join', {'match_id': match_id})
+    $('#chatbox').css({
+      top: $('#navbar').height(),
+    }),
+    document.getElementById("chatbox").style.display = "block";
   }
-  $('#chatbox').css({
-    top: $('#navbar').height(),
-  }),
-  document.getElementById("chatbox").style.display = "block";
-
 }
 
+//Open Match Message Board
 map.on('dblclick', function(evt){
   info.tooltip('hide');
   displayChatBox(map.getEventPixel(evt.originalEvent));
 });
 
-function closeForm() {
-  document.getElementById("chatbox").style.display = "none";
-}
-
 //Send Messages
-function sendMessage(match_id){
-  $.ajax({
-    type: 'POST',
-    url: `api/messages/${match_id}`,
-    data:{ 'text': $('#messagebox').val()},
-  });
-}
-
 $('#send').on('click', function(){
   match_id = $('p[id^="match"]').attr('name')
-  sendMessage(match_id)
+  sendMessage()
   $("#messagebox").val('')
-  loadMessages(match_id)
+});
+
+function sendMessage(){
+  socket.emit('post_message', {'text': $('#messagebox').val()})
+}
+
+//Receive Messages
+socket.on('load_message', data => {
+  $.each(data, add_message)
 })
 
 //Load Messages
@@ -166,14 +169,20 @@ function loadMessages(match_id){
     type: 'GET',
     url: `api/messages/${match_id}`,
     success: function(data){
-      console.log(data['messages'])
       $.each(data['messages'], add_message);
     }
   })
 }
+
+//Close Match Message Board
+$('#closeChat').on('click', function () {
+  document.getElementById("chatbox").style.display = "none";
+  socket.emit('leave', {})
+
+});
+
 //Add messages 
 function add_message(key, value){
-  console.log(value[0]['text'])
   $('<div>',{
     class: "received_msg"
   }).append( $('<div>',{
@@ -187,7 +196,6 @@ function add_message(key, value){
   ).appendTo('#msg_history')
 
 }
-
 
 //Date
 //Calendar

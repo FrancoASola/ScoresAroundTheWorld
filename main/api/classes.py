@@ -72,7 +72,6 @@ class Messages:
     def postMessage(self, message):
         #check if message exist and update or insert accordingly:
         self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
-        print(self.message_collection.find_one({'_id': self.match_id}))
 
     def getMessages(self):
         messages = self.message_collection.find_one({'_id': self.match_id})
