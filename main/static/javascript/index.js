@@ -118,15 +118,17 @@ map.on('click', function(evt) {
 });
 
 //Match Comment Box 
+
+//Connect Socket (This can be used to POST live games to Client from Server)
 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 socket.on('connect', function() {
 });
 var displayChatBox = function(pixel){
-  //Check if its clicking for 
+  //Check if feature exists where client is double clicking
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
   });
-  //If there is feature, close tooltip, open chatbox, load messages and join chat room.
+  //If there is feature open chatbox (setting name and styles), load messages and join chat room.
   if (feature) {
     var match_id = feature.get('match_id')
     $('p[id^="match"]').html(feature.get('info'))
@@ -163,7 +165,7 @@ socket.on('load_message', data => {
   $.each(data, add_message)
 })
 
-//Load Messages
+//Load Messages (pulling from DB)
 function loadMessages(match_id){
   $.ajax({
     type: 'GET',
@@ -178,10 +180,9 @@ function loadMessages(match_id){
 $('#closeChat').on('click', function () {
   document.getElementById("chatbox").style.display = "none";
   socket.emit('leave', {})
-
 });
 
-//Add messages 
+//Add messages to chat
 function add_message(key, value){
   $('<div>',{
     class: "received_msg"
@@ -194,10 +195,10 @@ function add_message(key, value){
     class: "time_date"
   }).append(`${value[0]['time']} | ${value[0]['date']}`)
   ).appendTo('#msg_history')
-
+  $('#msg_history').scrollTop($('#msg_history')[0].scrollHeight);
 }
 
-//Date
+//Find Finished Games
 //Calendar
 $('#picker').datetimepicker({
   timepicker: false,
@@ -211,7 +212,7 @@ $('#picker').datetimepicker({
   forceParse: false
 });
 
-//On Submit Date 
+//On Submit Date (Need to speed up this process on server side)
 $('#datesubmit').on('click', function () {
   var d = $('#picker').datetimepicker('getValue');
   var year = (d.getFullYear()).toString();
