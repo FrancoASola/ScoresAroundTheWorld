@@ -70,7 +70,7 @@ class Messages:
         self.message_collection = mongo.db.messages
 
     def postMessage(self, message):
-        #check if message exist and update or insert accordingly:
+        '''check if message exist and update or insert accordingly'''
         self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
 
     def getMessages(self):
@@ -94,9 +94,9 @@ class Highlights:
         self.highlight_collection = mongo.db.Highlights
     
     def postHighlight(self, message):
-        #check if message exist and update or insert accordingly:
-        self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
+        '''#check if message exist and update or insert accordingly:'''
+        self.highlight_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
 
     def getHighlights(self):
-        highlights = self.message_collection.find_one({'_id': self.match_id})
+        highlights = self.highlight_collection.find_one({'_id': self.match_id})
         return highlights if highlights else 'No Highlights'

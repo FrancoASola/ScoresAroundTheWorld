@@ -119,10 +119,11 @@ map.on('click', function(evt) {
 
 //Match Comment Box 
 
-//Connect Socket (This can be used to POST live games to Client from Server)
+//Connect Socket (This can be used to 'POST' live games to Client from Server)
 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 socket.on('connect', function() {
 });
+
 var displayChatBox = function(pixel){
   //Check if feature exists where client is double clicking
   var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
@@ -152,19 +153,29 @@ map.on('dblclick', function(evt){
 //Send Messages
 $('#send').on('click', function(){
   match_id = $('p[id^="match"]').attr('name')
-  sendMessage()
+  var text = $('#messagebox').val()
+  if (text){
+    sendMessage(text)
+  } else {
+    alert('No Message to be Sent')
+  }
   $("#messagebox").val('')
 });
 
 $('#messagebox').keydown(function(e){
   if(e.which==13){
     match_id = $('p[id^="match"]').attr('name')
-    sendMessage()
+    var text = $('#messagebox').val()
+    if (text){
+      sendMessage(text)
+    } else {
+      alert('No Message to be Sent')
+    }
     $("#messagebox").val('')
   }
 });
-function sendMessage(){
-  socket.emit('post_message', {'text': $('#messagebox').val()})
+function sendMessage(text){
+  socket.emit('post_message', {'text': text})
 }
 
 //Receive Messages
@@ -218,7 +229,6 @@ $('#msg_hl_switcher').on('click', function () {
     $("#msg_hl_switcher").html('Highlights');
   }
 });
-
 
 //Find Finished Games
 //Calendar

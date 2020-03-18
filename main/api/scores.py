@@ -63,3 +63,5 @@ def pullFinishedSoccerMatches(current_matches, date):
     
     return current_matches if current_matches else 404            
 
+if __name__ == "__main__":
+    print(pullSoccerMatches({}))
