@@ -156,6 +156,13 @@ $('#send').on('click', function(){
   $("#messagebox").val('')
 });
 
+$('#messagebox').keydown(function(e){
+  if(e.which==13){
+    match_id = $('p[id^="match"]').attr('name')
+    sendMessage()
+    $("#messagebox").val('')
+  }
+});
 function sendMessage(){
   socket.emit('post_message', {'text': $('#messagebox').val()})
 }
@@ -197,6 +204,21 @@ function add_message(key, value){
   ).appendTo('#msg_history')
   $('#msg_history').scrollTop($('#msg_history')[0].scrollHeight);
 }
+
+//Back and forth between messages and highlights
+
+$('#msg_hl_switcher').on('click', function () {
+  if ($("#msg_hl_switcher").html() === 'Highlights'){
+    document.getElementById("msg_history").style.display = "none";
+    document.getElementById("hl_history").style.display = "block";
+    $("#msg_hl_switcher").html('Messages');
+  } else {
+    document.getElementById("msg_history").style.display = "block";
+    document.getElementById("hl_history").style.display = "none";
+    $("#msg_hl_switcher").html('Highlights');
+  }
+});
+
 
 //Find Finished Games
 //Calendar

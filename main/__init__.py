@@ -18,4 +18,5 @@ def create_app(config_object = 'main.settings'):
     app.register_blueprint(api.routes.mod, url_prefix ='/api')
 
     socketio.init_app(app)
+
     return app

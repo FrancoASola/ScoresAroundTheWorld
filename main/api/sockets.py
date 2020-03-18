@@ -1,14 +1,15 @@
 from flask_socketio import emit, join_room, leave_room
 from .. import socketio
 from flask import session
+from . import classes
 
 ##Leave chat currently in (if any) and join chat room.
 @socketio.on('join')
 def join(message):
+    print('entering Room')
     if session.get('room'):
         leave_room(session['room'])
     session['room'] = message['match_id']
-    print('entering:', session['room'])
     join_room(session['room'])
     
 ##Leave chat room
@@ -16,7 +17,6 @@ def join(message):
 def leave(message):
     room = session.get('room')
     session['room'] = ''
-    print('leaving:', room)
     leave_room(room)
 
 ##Post Messages to db and emit to everyone in chat room.

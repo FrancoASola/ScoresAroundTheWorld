@@ -47,11 +47,11 @@ class Match:
                 mongo.db.coordinates.insert_one(ins)
                 self.coordinates = coords['results'][0]['geometry']['location']
                 return 
-            else: 
-                ins = {'_id': self.homeTeamID, 'coordinates': 'N/A'}
-                mongo.db.coordinates.insert_one(ins)
-                self.coordinates = 'N/A'
-                return 
+        ins = {'_id': self.homeTeamID, 'coordinates': 'N/A'}
+        mongo.db.coordinates.insert_one(ins)
+        self.coordinates = 'N/A'
+        return 
+        
                 
 class Message:
 
@@ -77,3 +77,26 @@ class Messages:
         messages = self.message_collection.find_one({'_id': self.match_id})
         return messages if messages else 'No Messages'
 
+class Highlight:
+    
+    def __init__(self, match_id, user, url, title):
+        self.match_id =match_id
+        self.user = user
+        self.url = url
+        self.title = title
+        self.time = datetime.datetime.now().strftime("%H:%M:%S")
+        self.date = datetime.date.today().strftime("%m/%d/%y")
+
+class Highlights:
+
+    def __init__(self, match_id):
+        self.match_id = match_id
+        self.highlight_collection = mongo.db.Highlights
+    
+    def postHighlight(self, message):
+        #check if message exist and update or insert accordingly:
+        self.message_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
+
+    def getHighlights(self):
+        highlights = self.message_collection.find_one({'_id': self.match_id})
+        return highlights if highlights else 'No Highlights'

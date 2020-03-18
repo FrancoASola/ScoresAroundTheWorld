@@ -9,11 +9,6 @@
     
 }
 
-/* #map {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-} */
 #info {
     position: absolute;
     height: 1px;
@@ -34,8 +29,6 @@
 }
 .tooltip-inner {
     border: 2px solid white;
-    /* font-size: 80%; */
-    /* white-space: pre-wrap; */
     position: relative;
     max-width: 300px;
     max-height: 1000px;
@@ -68,30 +61,11 @@
 
 }
 
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #4CAF50;
-  color: white;
-  /* padding: 1px 1px; */
-  border: none;
-  cursor: pointer;
-  /* width: 100%; */
-  /* height: 10px;
-  margin-bottom:1px; */
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
 
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
-
-/* Testing new messaging look */
 
 .received_msg {
   display: inline-block;
@@ -138,6 +112,21 @@
     width: 95%;
     bottom: 0;
 }
+
+.msg_history {
+    display: block;
+    height: 100%;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.hl_history {
+    display: none;
+    height: 100%;
+    bottom: 0;
+    overflow-y: auto;
+}
+
 .input_msg_write .btn-sm {
   background: #05728f;
   color: #fff;
@@ -151,18 +140,21 @@
 .chat-popup .btn-danger {
     background-color: red;
     color: white;
-    /* padding: 16px 20px; */
     border: none;
     cursor: pointer;
     opacity: 0.8;
     left: 3%;
     position: absolute;
     top: 1%;
-    
-  }
+}
 
-
-.msg_history {
-  height: 100%;
-  bottom: 0;
-  overflow-y: auto;
+.chat-popup .btn-warning{
+    background-color: #fcba03;
+    color: black;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    right: 3%;
+    position: absolute;
+    top: 1%;
+}
