@@ -5,11 +5,9 @@ import json
 
 key = os.environ.get('LIVE_SCORE_KEY')
 secret = os.environ.get('LIVE_SCORE_SECRET')
-
 #Pulls Match Data and Correlates with Existing Data
 def pullSoccerMatches(current_matches):
     ##TO DO: Need to Encrypt Keys. Find a good way to store current_matchs (Should be inmemory)
-    print(key)
     response = requests.get(f"http://livescore-api.com/api-client/scores/live.json?key={key}&secret={secret}")
     if not response:
         return 'No Response from livescore-api'

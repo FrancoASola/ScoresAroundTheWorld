@@ -1,13 +1,11 @@
 import os
-key = os.environ.get('GOOGLE_KEY')
-print(os.environ)
 import pymongo
 import requests
 import json
 from main.extensions import mongo
 import datetime
 
-
+key = os.environ.get('GOOGLE_KEY')
 
 class Match:
 
