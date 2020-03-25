@@ -12,14 +12,17 @@ mod = Blueprint('api', __name__)
 def updateLiveSoccer():
     ##To do:
     #Require Authentication.
-    return buildgeojson({}, True, ''), 200
+    geojson = buildgeojson({}, True, '')
+    return geojson, 200 if geojson else 400
 
 '''Finished Games'''
 @mod.route('/finished/soccer/<date>' , methods=['GET'])
 def updateFinishedSoccer(date):
     ##To do:
     #Require Authentication.
-    return buildgeojson({}, False, date), 200
+    geojson = buildgeojson({}, False, date)
+    return geojson, 200 if geojson else 400
+
 
 @mod.route('/messages/<match_id>', methods=['GET'])
 def messages(match_id):
@@ -65,6 +68,7 @@ def post_message(message):
     messages.postMessage(message = message)
     emit("load_message", [[{'text': message.text, 'date': message.date, 'time': message.time }]], room=msg_room)
 
+##Post highlights to db and emit to everyone in chat hl_room
 @socketio.on('post_higlight')
 def post_highlights(message):
     url = message['url']

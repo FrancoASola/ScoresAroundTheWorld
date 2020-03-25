@@ -1,4 +1,4 @@
-from main import create_app
+from main import create_app, socketio
 
 app = create_app(config_object = 'main.settings')
 

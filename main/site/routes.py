@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template
 
-
 mod = Blueprint('site', __name__)
 current_matches = {}
 

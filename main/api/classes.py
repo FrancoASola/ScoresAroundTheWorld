@@ -1,8 +1,13 @@
+import os
+key = os.environ.get('GOOGLE_KEY')
+print(os.environ)
 import pymongo
 import requests
 import json
 from main.extensions import mongo
 import datetime
+
+
 
 class Match:
 
@@ -30,7 +35,7 @@ class Match:
             return 
         if self.location:
             loc = self.location.replace(' ', '+')
-            response = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={loc}&key=AIzaSyCMjW8GePLfbExz9gO-zD-3f6IkaUhXSxo')
+            response = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={loc}&key={key}')
             coords = json.loads(response.text)
             if coords['results']:
                 ins = {'_id': self.homeTeamID, 'coordinates': coords['results'][0]['geometry']['location']}
@@ -40,7 +45,7 @@ class Match:
         if self.homeTeam:
             home_team = self.homeTeam.replace(' ', '+')
             home_team += '+stadium'
-            response = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={home_team}&key=AIzaSyCMjW8GePLfbExz9gO-zD-3f6IkaUhXSxo')
+            response = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={home_team}&key={key}')
             coords = json.loads(response.text)
             if coords['results']:
                 ins = {'_id': self.homeTeamID, 'coordinates': coords['results'][0]['geometry']['location']}
@@ -52,7 +57,10 @@ class Match:
         self.coordinates = 'N/A'
         return 
         
-                
+
+##TO Do:
+#Refactor code below as classes are essentially the same
+
 class Message:
 
     def __init__(self, match_id, user, text):
