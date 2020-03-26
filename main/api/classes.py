@@ -23,7 +23,10 @@ class Match:
     #Check if Home Team is on DB if not, call on Google Geocoding API. TO DO: change
     def findCoords(self):
         '''Get Coordinates for Stadium'''
+        print('finding coords')
+        print('going to check mongo', mongo.db.coordinates.insert_one({'name':'test'}))
         coords = mongo.db.coordinates.find_one({'_id': self.homeTeamID})
+        print('coords: ', coords)
         if coords:
             if coords['coordinates']:
                 self.coordinates = coords['coordinates']
@@ -99,9 +102,9 @@ class Highlights:
         self.match_id = match_id
         self.highlight_collection = mongo.db.Highlights
     
-    def postHighlight(self, message):
-        '''#check if message exist and update or insert accordingly:'''
-        self.highlight_collection.update_one({'_id': self.match_id}, {'$push': {'messages': [message.__dict__]}}, upsert=True)
+    def postHighlight(self, highlight):
+        '''#check if highlight exist and update or insert accordingly:'''
+        self.highlight_collection.update_one({'_id': self.match_id}, {'$push': {'highlights': [highlight.__dict__]}}, upsert=True)
 
     def getHighlights(self):
         highlights = self.highlight_collection.find_one({'_id': self.match_id})
