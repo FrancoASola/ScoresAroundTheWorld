@@ -25,6 +25,7 @@ def pullFinishedSoccerMatches(date):
     url = f"http://livescore-api.com/api-client/scores/history.json?from={date}&to={date}&key={key}&secret={secret}"
     matches = []
     page = 1
+    
     while True:
         try:
             response = requests.get(url + f'&page={page}')
