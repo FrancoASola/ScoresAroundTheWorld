@@ -6,6 +6,8 @@ def buildgeojson(current_matches, live, date):
         current_matches = scores.pullSoccerMatches(current_matches)
     else:
         current_matches = scores.pullFinishedSoccerMatches(current_matches,date)
+    if current_matches == 404:
+        return 404
     soccer = {"type":"FeatureCollection","features":[]}
     for match_id in current_matches:
         match = current_matches[match_id]
@@ -20,6 +22,6 @@ def buildgeojson(current_matches, live, date):
                         }
             }
             soccer['features'].append(feature)
-    return soccer
+    return soccer 
 
     
