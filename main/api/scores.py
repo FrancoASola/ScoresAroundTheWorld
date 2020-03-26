@@ -12,8 +12,9 @@ def pullSoccerMatches(current_matches):
     try:
         response = requests.get(f"http://livescore-api.com/api-client/scores/live.json?key={key}&secret={secret}")
     except:
+        return 'Error in Response from Live Score'
+    if not response
         return 'No Response from Live Score'
-
     data = response.json()
     matches = data['data']['match']
     current_matches = buildCurrentMatches(matches, current_matches)
@@ -25,12 +26,16 @@ def pullFinishedSoccerMatches(date):
     url = f"http://livescore-api.com/api-client/scores/history.json?from={date}&to={date}&key={key}&secret={secret}"
     matches = []
     page = 1
-    
+
     while True:
         try:
             response = requests.get(url + f'&page={page}')
         except:
+            return 'Error in Response from Live Score'
+
+        if not response
             return 'No Response from Live Score'
+            
         data = response.json()
         if data:
             matches.extend(data['data']['match'])
